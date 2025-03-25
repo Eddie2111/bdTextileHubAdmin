@@ -127,7 +127,7 @@ export interface IAuthenticateUser extends IThrowError {
   }
 }
 
-export async function authenticateAdmin(email: string, password: string) {
+export async function authenticateAdmin(email: string, password: string): Promise<IThrowError> {
   try {
     if (!email || !password) {
       throw new Error("Email and password are required.");

@@ -7,6 +7,7 @@ interface ICookieProps {
     options?: {
         path: string;
         maxAge: number;
+        httpOnly?: boolean;
     }
 }
 
