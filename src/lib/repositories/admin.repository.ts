@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import argon2 from "argon2";
 import { createJWTToken } from "../utils";
 
-interface IThrowError {
+export interface IThrowError {
   message: string;
   status: number;
   data?: { 
@@ -117,8 +117,9 @@ export async function deleteAdmin(id: string) {
 }
 
 
-interface IAuthenticateUser extends IThrowError {
+export interface IAuthenticateUser extends IThrowError {
   data: {
+    message?:string;
     id: string;
     name: string;
     email: string;
@@ -126,10 +127,10 @@ interface IAuthenticateUser extends IThrowError {
   }
 }
 
-export async function authenticateAdmin(email: string, password: string): Promise<IAuthenticateUser | IThrowError> {
+export async function authenticateAdmin(email: string, password: string) {
   try {
     if (!email || !password) {
-      return throwError("Email and password are required.");
+      throw new Error("Email and password are required.");
     }
     const Admin = await prisma.admin.findUnique({
       where: { email },
@@ -141,14 +142,11 @@ export async function authenticateAdmin(email: string, password: string): Promis
       },
     })
     if (!Admin) {
-      return throwError("Invalid email or password. Failed on input check");
+      return { message:"Invalid email or password because user does not exist", status: 202}
     }
     const passwordMatch = await argon2.verify(Admin.password, password);
     if (!passwordMatch) {
-      return {
-        message: "Failed logging in, password don't match",
-        status: 400,
-      }
+      return { message:"Failed logging in, password don't match", status: 202}
     }
     const token = await createJWTToken({ id: Admin.id, name: Admin.name, email: Admin.email });
     if (token) {
@@ -163,12 +161,11 @@ export async function authenticateAdmin(email: string, password: string): Promis
         },
       }
     } else {
-      return throwError("Failed logging in, token not created")
+      return { message:"Failed logging in, token not created", status: 202}
     }
   } catch (err) {
     const error = err as { code: string };
     console.error("Error authenticating Admin:", error);
-    return throwError("Error authenticating Admin");
+    return { message:"Error authenticating Admin", status: 202}
   }
 }
-

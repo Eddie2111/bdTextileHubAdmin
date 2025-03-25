@@ -18,6 +18,7 @@ import { useLoginForm } from "./_components/login.hooks"
 
 export default function LoginPage() {
   const { form, onSubmit } = useLoginForm();
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-green-50">
       <Card className="w-full max-w-md shadow-lg">
@@ -32,7 +33,6 @@ export default function LoginPage() {
           <CardTitle className="text-2xl font-bold text-green-800">BD Textile Hub</CardTitle>
           <CardDescription>Admin Panel Login</CardDescription>
         </CardHeader>
-
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <CardContent>
