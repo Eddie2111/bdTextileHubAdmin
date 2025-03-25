@@ -38,8 +38,8 @@ export const useLoginForm = () => {
         },
       });
       router.push("/dashboard");
-    } else {
-      toast.warning("Failed to login, reacheck email or password?");
+    } else if(response.status === 400 && response.message){
+      toast.warning(response.message);
     }
   }
   return {

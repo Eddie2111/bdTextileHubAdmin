@@ -3,6 +3,23 @@ import { prisma } from "@/lib/prisma";
 import argon2 from "argon2";
 import { createJWTToken } from "../utils";
 
+interface IThrowError {
+  message: string;
+  status: number;
+  data?: { 
+    id: string;
+    name: string;
+    email: string;
+    token: string;
+  }
+}
+const throwError = (message: string): IThrowError=>{
+  return {
+    message: message ?? "unknown error occured",
+    status: 400, 
+  }
+}
+
 export async function upsertAdmin(data: {
   id?: string;
   name: string;
@@ -11,7 +28,7 @@ export async function upsertAdmin(data: {
 }) {
   try {
     if (!data.email) {
-      throw new Error("Email is required.");
+      return throwError("Email is required.");
     }
     return await prisma.admin.upsert({
       where: { email: data.email },
@@ -28,14 +45,14 @@ export async function upsertAdmin(data: {
   } catch (err) {
     const error = err as { code: string };
     console.error("Error upserting Admin:", error);
-    throw error;
+    return throwError("Error upserting Admin");
   }
 }
 
 export async function getAdminById(id: string) {
   try {
     if (!id) {
-      throw new Error("Admin ID is required.");
+      return throwError("Admin ID is required.");
     }
     const Admin = await prisma.admin.findUnique({
       where: { id },
@@ -47,20 +64,20 @@ export async function getAdminById(id: string) {
       },
     });
     if (!Admin) {
-      throw new Error("Admin not found.");
+      return throwError("Admin not found.");
     }
     return Admin;
   } catch (err) {
     const error = err as { code: string };
     console.error("Error fetching Admin by ID:", error);
-    return null;
+    return throwError("Error fetching Admin by ID");
   }
 }
 
 export async function getAdminByEmail(email: string) {
   try {
     if (!email) {
-      throw new Error("Email is required.");
+      return throwError("Email is required.");
     }
     const Admin = await prisma.admin.findUnique({
       where: { email },
@@ -72,41 +89,59 @@ export async function getAdminByEmail(email: string) {
       },
     });
     if (!Admin) {
-      throw new Error("Admin not found.");
+      return throwError("Admin not found.");
     }
     return Admin;
   } catch (err) {
     const error = err as { code: string };
     console.error("Error fetching Admin by email:", error);
-    return null;
+    return throwError("Error fetching Admin by email");
   }
 }
 
 export async function deleteAdmin(id: string) {
   try {
     if (!id) {
-      throw new Error("Admin ID is required.");
+      return throwError("Admin ID is required.");
     }
     await prisma.admin.delete({ where: { id } });
   } catch (err) {
     const error = err as { code: string };
     if (error.code === "P2025") {
       console.error("Admin not found.");
-      return null;
+      return throwError("Admin not found.");
     }
     console.error("Error deleting Admin:", error);
-    return null;
+    return throwError("Error deleting Admin");
   }
 }
 
-export async function authenticateAdmin(email: string, password: string) {
+
+interface IAuthenticateUser extends IThrowError {
+  data: {
+    id: string;
+    name: string;
+    email: string;
+    token: string;
+  }
+}
+
+export async function authenticateAdmin(email: string, password: string): Promise<IAuthenticateUser | IThrowError> {
   try {
     if (!email || !password) {
-      throw new Error("Email and password are required.");
+      return throwError("Email and password are required.");
     }
-    const Admin = await getAdminByEmail(email);
+    const Admin = await prisma.admin.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: true,
+      },
+    })
     if (!Admin) {
-      throw new Error("Invalid email or password. Failed on input check");
+      return throwError("Invalid email or password. Failed on input check");
     }
     const passwordMatch = await argon2.verify(Admin.password, password);
     if (!passwordMatch) {
@@ -128,15 +163,12 @@ export async function authenticateAdmin(email: string, password: string) {
         },
       }
     } else {
-      return {
-        message: "Failed logging in, token not created",
-        status: 400,
-      }
+      return throwError("Failed logging in, token not created")
     }
   } catch (err) {
     const error = err as { code: string };
     console.error("Error authenticating Admin:", error);
-    return null;
+    return throwError("Error authenticating Admin");
   }
 }
 
