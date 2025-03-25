@@ -11,7 +11,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:generate": "prisma generate",
     "prisma:studio": "prisma studio",
-    "post:install": "prisma generate && pnpm rebuild argon2"
+    "post:install": "prisma generate && npm rebuild argon2 --build-from-source"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
