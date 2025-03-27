@@ -1,8 +1,9 @@
 import type React from "react";
 
-const LoadingSpinner: React.FC = () => {
+const LoadingSpinner = ({size}:{size?: number}) => {
+  const spinnerSize = size ?? 32;
   return (
-    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+    <div className={`animate-spin rounded-full h-${spinnerSize} w-${spinnerSize} border-t-2 border-b-2 border-gray-900`}></div>
   );
 };
 

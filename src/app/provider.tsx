@@ -52,7 +52,7 @@ export default function DashboardLayout({
     return <div>{children}</div>;
   } else if (isAuthenticated) {
     return (
-      <div className="flex min-h-screen flex-col">
+      <div className="flex h-[90vh] flex-col border-red-500 border-10">
         {/* Mobile Sidebar */}
         <MobileSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen}/>
 
