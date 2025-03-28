@@ -12,19 +12,19 @@ export async function createProduct(data: {
   attributes?: string;
   color: string[];
   categories: string[];
-  status: ProductStatus;
-  currency: string;
 }) {
   try {
-    return await prisma.product.create({
+    const create = await prisma.product.create({
       data: {
         ...data,
+        status: ProductStatus.AVAILABLE,
         attributes: data.attributes ? JSON.stringify(data.attributes) : undefined,
       },
     });
+    return create ? true : false;
   } catch (err) {
     console.error("Error creating product:", err);
-    throw err;
+    return false;
   }
 }
 

@@ -1,5 +1,6 @@
 import {
     BarChart3,
+    Images,
     LayoutDashboard,
     Package,
     ShoppingCart,
@@ -26,6 +27,11 @@ export const routes = [
       href: "/dashboard/orders",
       icon: ShoppingCart,
       title: "Orders",
+    },
+    {
+      href: "/dashboard/images",
+      icon: Images,
+      title: "Stored Images",
     },
     {
       href: "/dashboard/analytics",

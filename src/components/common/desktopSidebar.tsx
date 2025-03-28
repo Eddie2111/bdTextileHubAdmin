@@ -17,7 +17,7 @@ export const DesktopSidebar = ({
 }: IDesktopSidebarProps) => {
   const pathname = usePathname();
   return (
-    <div className="grid lg:grid-cols-[240px_1fr]">
+    <div className="grid lg:grid-cols-[240px_1fr] h-[90vh]">
       <aside className="hidden lg:block border-r bg-white">
         <div className="flex h-full flex-col">
           <div className="border-b px-6 py-4">
