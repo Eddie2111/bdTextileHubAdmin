@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+
 import localFont from "next/font/local";
-import "./globals.css";
 import DashboardLayout from "./provider";
+import "./globals.css";
 import { Toaster } from "sonner";
 
 const geistSans = localFont({
@@ -9,6 +10,7 @@ const geistSans = localFont({
   variable: "--font-geist-sans",
   weight: "100 900",
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",

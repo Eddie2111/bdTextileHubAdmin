@@ -4,11 +4,12 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 
 import { loginFormSchemaResolver } from "./login.helpers";
-import type { TLoginFormType } from "./login.helpers";
-import type { IAuthenticateUser } from "@/lib/repositories/admin.repository";
 
 import { toast } from "sonner";
 import { setCookie } from "@/lib/cookie";
+
+import type { TLoginFormType } from "./login.helpers";
+import type { IAuthenticateUser } from "@/lib/repositories/admin.repository";
 
 interface ICombinedInterface {
   message: string;
@@ -29,7 +30,7 @@ export const useLoginForm = () => {
     const { email, password } = values;
     const response = await axios.post<TLoginFormType, ICombinedInterface>(
       "/login/api",
-      { email, password },
+      { email: email.toLocaleLowerCase(), password },
       { withCredentials: true },
     );
 

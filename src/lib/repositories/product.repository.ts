@@ -17,6 +17,7 @@ export async function createProduct(data: {
     const create = await prisma.product.create({
       data: {
         ...data,
+        name: data.name.toLocaleLowerCase(),
         status: ProductStatus.AVAILABLE,
         attributes: data.attributes
           ? JSON.stringify(data.attributes)
