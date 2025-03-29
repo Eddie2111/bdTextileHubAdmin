@@ -1,49 +1,98 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Ban, MoreHorizontal, Search } from "lucide-react"
+import { useState } from "react";
+import Link from "next/link";
+import { Ban, MoreHorizontal, Search } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface User {
-  id: string
-  name: string
-  email: string
-  status: "active" | "blocked"
+  id: string;
+  name: string;
+  email: string;
+  status: "active" | "blocked";
 }
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([
     { id: "1", name: "John Doe", email: "john@example.com", status: "active" },
-    { id: "2", name: "Jane Smith", email: "jane@example.com", status: "active" },
-    { id: "3", name: "Robert Johnson", email: "robert@example.com", status: "active" },
-    { id: "4", name: "Emily Davis", email: "emily@example.com", status: "blocked" },
-    { id: "5", name: "Michael Wilson", email: "michael@example.com", status: "active" },
-    { id: "6", name: "Sarah Brown", email: "sarah@example.com", status: "active" },
-    { id: "7", name: "David Miller", email: "david@example.com", status: "active" },
-    { id: "8", name: "Lisa Garcia", email: "lisa@example.com", status: "active" },
-  ])
+    {
+      id: "2",
+      name: "Jane Smith",
+      email: "jane@example.com",
+      status: "active",
+    },
+    {
+      id: "3",
+      name: "Robert Johnson",
+      email: "robert@example.com",
+      status: "active",
+    },
+    {
+      id: "4",
+      name: "Emily Davis",
+      email: "emily@example.com",
+      status: "blocked",
+    },
+    {
+      id: "5",
+      name: "Michael Wilson",
+      email: "michael@example.com",
+      status: "active",
+    },
+    {
+      id: "6",
+      name: "Sarah Brown",
+      email: "sarah@example.com",
+      status: "active",
+    },
+    {
+      id: "7",
+      name: "David Miller",
+      email: "david@example.com",
+      status: "active",
+    },
+    {
+      id: "8",
+      name: "Lisa Garcia",
+      email: "lisa@example.com",
+      status: "active",
+    },
+  ]);
 
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState("");
 
   const filteredUsers = users.filter(
-    (user) =>
+    user =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+  );
 
   const toggleUserStatus = (userId: string) => {
     setUsers(
-      users.map((user) =>
-        user.id === userId ? { ...user, status: user.status === "active" ? "blocked" : "active" } : user,
+      users.map(user =>
+        user.id === userId
+          ? { ...user, status: user.status === "active" ? "blocked" : "active" }
+          : user,
       ),
-    )
-  }
+    );
+  };
 
   return (
     <div className="space-y-4">
@@ -55,7 +104,7 @@ export default function UsersPage() {
             placeholder="Search users..."
             className="w-full pl-8"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
@@ -76,7 +125,7 @@ export default function UsersPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredUsers.map((user) => (
+              {filteredUsers.map(user => (
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">{user.id}</TableCell>
                   <TableCell>{user.name}</TableCell>
@@ -84,7 +133,9 @@ export default function UsersPage() {
                   <TableCell>
                     <span
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        user.status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                        user.status === "active"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
                       }`}
                     >
                       {user.status}
@@ -100,9 +151,13 @@ export default function UsersPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem asChild>
-                          <Link href={`/dashboard/users/${user.id}`}>View Profile</Link>
+                          <Link href={`/dashboard/users/${user.id}`}>
+                            View Profile
+                          </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => toggleUserStatus(user.id)}>
+                        <DropdownMenuItem
+                          onClick={() => toggleUserStatus(user.id)}
+                        >
                           {user.status === "active" ? (
                             <>
                               <Ban className="mr-2 h-4 w-4 text-red-600" />
@@ -125,6 +180,5 @@ export default function UsersPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
-

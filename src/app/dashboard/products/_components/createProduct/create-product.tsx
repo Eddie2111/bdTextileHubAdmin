@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { Plus, X, ArrowLeft, ArrowRight, Upload, Check } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Plus, X, ArrowLeft, ArrowRight, Upload, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -12,45 +12,44 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 
-import { Form, FormLabel } from "@/components/ui/form"
+import { Form, FormLabel } from "@/components/ui/form";
 
-import { motion, AnimatePresence } from "framer-motion"
-import { useDropzone } from "react-dropzone"
-import { LoadingSpinner } from "@/components/common/loadingSpinner"
-import "react-quill/dist/quill.snow.css"
-import { toast } from "sonner"
+import { motion, AnimatePresence } from "framer-motion";
+import { useDropzone } from "react-dropzone";
+import { LoadingSpinner } from "@/components/common/loadingSpinner";
+import "react-quill/dist/quill.snow.css";
+import { toast } from "sonner";
 
-import { cn } from "@/lib/utils"
-import { uploadImages } from "@/lib/uploadImages"
-import { colors, slideVariants } from "./create-product.constant"
-import { CreateProduct_Step_1 } from "./create-product.form.step-1"
-import { CreateProduct_Step_2 } from "./create-product.form.step-2"
-import { createProductFormResolver } from "./create-product.helper"
+import { cn } from "@/lib/utils";
+import { uploadImages } from "@/lib/uploadImages";
+import { colors, slideVariants } from "./create-product.constant";
+import { CreateProduct_Step_1 } from "./create-product.form.step-1";
+import { CreateProduct_Step_2 } from "./create-product.form.step-2";
+import { createProductFormResolver } from "./create-product.helper";
 
 import type { TCreateProductFormResolverType } from "./create-product.helper";
-import { createProduct } from "@/lib/repositories/product.repository"
+import { createProduct } from "@/lib/repositories/product.repository";
 
 interface Product {
-  name: string
-  categories: string[]
-  price: number
-  quantity: number
-  image: string[]
-  description: string
-  attributes: string
-  color: string[]
+  name: string;
+  categories: string[];
+  price: number;
+  quantity: number;
+  image: string[];
+  description: string;
+  attributes: string;
+  color: string[];
 }
 
-
 export const CreateProduct = () => {
-  const [products, setProducts] = useState<Product[]>([])
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [currentStep, setCurrentStep] = useState(1)
-  const [images, setImages] = useState<File[]>([])
-  const [direction, setDirection] = useState(0)
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [images, setImages] = useState<File[]>([]);
+  const [direction, setDirection] = useState(0);
 
   // Initialize form
   const form = useForm<TCreateProductFormResolverType>({
@@ -64,41 +63,41 @@ export const CreateProduct = () => {
       attributes: "",
       color: [],
     },
-  })
+  });
 
   const nextStep = () => {
-    setDirection(1)
-    setCurrentStep((prev) => prev + 1)
-  }
+    setDirection(1);
+    setCurrentStep(prev => prev + 1);
+  };
 
   const prevStep = () => {
-    setDirection(-1)
-    setCurrentStep((prev) => prev - 1)
-  }
+    setDirection(-1);
+    setCurrentStep(prev => prev - 1);
+  };
 
   const onDrop = (acceptedFiles: File[]) => {
-    const totalFiles = [...images, ...acceptedFiles]
+    const totalFiles = [...images, ...acceptedFiles];
     if (totalFiles.length > 4) {
-      toast.error("You can only upload up to 4 images.")
-      return
+      toast.error("You can only upload up to 4 images.");
+      return;
     }
-    setImages(totalFiles)
-  }
+    setImages(totalFiles);
+  };
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: { "image/*": [] },
     maxFiles: 4 - images.length,
-  })
+  });
 
   const removeImage = (index: number) => {
-    const updatedImages = images.filter((_, i) => i !== index)
-    setImages(updatedImages)
-  }
+    const updatedImages = images.filter((_, i) => i !== index);
+    setImages(updatedImages);
+  };
 
   const onSubmit = async (data: TCreateProductFormResolverType) => {
     try {
-      setIsSubmitting(true)
+      setIsSubmitting(true);
 
       // Upload images and wait for the URLs
       const uploadedUrls = await uploadImages(images);
@@ -113,49 +112,54 @@ export const CreateProduct = () => {
         attributes: data.attributes || "",
         color: data.color,
         categories: data.categories,
-      }
+      };
 
       // Add the new product to the list
-      setProducts([...products, newProductEntry])
+      setProducts([...products, newProductEntry]);
 
       // Log all form data including uploaded image IDs
       console.log("Form Data:", {
         ...data,
         imageIds: uploadedUrls,
         fullProduct: newProductEntry,
-      })
+      });
       const response = await createProduct(newProductEntry);
       if (response) {
-        toast.success(`Created product ${data.name}`)
-        setIsSubmitting(false)
-        resetForm()
+        toast.success(`Created product ${data.name}`);
+        setIsSubmitting(false);
+        resetForm();
       }
     } catch (error) {
-      setIsSubmitting(false)
-      toast.error("Error creating product")
-      console.error("Error creating product:", error)
+      setIsSubmitting(false);
+      toast.error("Error creating product");
+      console.error("Error creating product:", error);
     }
-  }
+  };
 
   const resetForm = () => {
-    form.reset()
-    setImages([])
-    setCurrentStep(1)
-    setIsDialogOpen(false)
-  }
+    form.reset();
+    setImages([]);
+    setCurrentStep(1);
+    setIsDialogOpen(false);
+  };
 
   const isStepValid = () => {
     switch (currentStep) {
       case 1:
-        return form.getValues().name && form.getValues().categories && form.getValues().price && form.getValues().quantity
+        return (
+          form.getValues().name &&
+          form.getValues().categories &&
+          form.getValues().price &&
+          form.getValues().quantity
+        );
       case 2:
-        return form.getValues().color.length > 0
+        return form.getValues().color.length > 0;
       case 3:
-        return images.length > 0
+        return images.length > 0;
       default:
-        return true
+        return true;
     }
-  }
+  };
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -458,5 +462,4 @@ export const CreateProduct = () => {
       </DialogContent>
     </Dialog>
   );
-}
-
+};

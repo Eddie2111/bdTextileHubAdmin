@@ -5,19 +5,20 @@ import { cn } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ReactNode;
 }
 
 const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ({ className, type = "password",icon , ...props }, ref) => {
+  ({ className, type = "password", icon, ...props }, ref) => {
     // State to manage whether the password is visible or hidden
     const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
 
     // Toggle function to switch between "password" and "text"
     const togglePasswordVisibility = () => {
-      setIsPasswordVisible((prev) => !prev);
+      setIsPasswordVisible(prev => !prev);
     };
 
     return (
@@ -47,7 +48,11 @@ const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
           className="absolute inset-y-0 right-0 flex items-center px-3 text-sm font-medium text-muted-foreground hover:text-foreground"
           onClick={togglePasswordVisibility}
         >
-          {isPasswordVisible ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
+          {isPasswordVisible ? (
+            <EyeOff className="w-6 h-6" />
+          ) : (
+            <Eye className="w-6 h-6" />
+          )}
         </button>
       </div>
     );

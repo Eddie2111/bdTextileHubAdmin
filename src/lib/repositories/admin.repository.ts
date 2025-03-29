@@ -6,19 +6,19 @@ import { createJWTToken } from "../utils";
 export interface IThrowError {
   message: string;
   status: number;
-  data?: { 
+  data?: {
     id: string;
     name: string;
     email: string;
     token: string;
-  }
+  };
 }
-const throwError = (message: string): IThrowError=>{
+const throwError = (message: string): IThrowError => {
   return {
     message: message ?? "unknown error occured",
-    status: 400, 
-  }
-}
+    status: 400,
+  };
+};
 
 export async function upsertAdmin(data: {
   id?: string;
@@ -116,18 +116,20 @@ export async function deleteAdmin(id: string) {
   }
 }
 
-
 export interface IAuthenticateUser extends IThrowError {
   data: {
-    message?:string;
+    message?: string;
     id: string;
     name: string;
     email: string;
     token: string;
-  }
+  };
 }
 
-export async function authenticateAdmin(email: string, password: string): Promise<IThrowError> {
+export async function authenticateAdmin(
+  email: string,
+  password: string,
+): Promise<IThrowError> {
   try {
     if (!email || !password) {
       throw new Error("Email and password are required.");
@@ -140,15 +142,25 @@ export async function authenticateAdmin(email: string, password: string): Promis
         email: true,
         password: true,
       },
-    })
+    });
     if (!Admin) {
-      return { message:"Invalid email or password because user does not exist", status: 202}
+      return {
+        message: "Invalid email or password because user does not exist",
+        status: 202,
+      };
     }
     const passwordMatch = await argon2.verify(Admin.password, password);
     if (!passwordMatch) {
-      return { message:"Failed logging in, password don't match", status: 202}
+      return {
+        message: "Failed logging in, password don't match",
+        status: 202,
+      };
     }
-    const token = await createJWTToken({ id: Admin.id, name: Admin.name, email: Admin.email });
+    const token = await createJWTToken({
+      id: Admin.id,
+      name: Admin.name,
+      email: Admin.email,
+    });
     if (token) {
       return {
         message: "Logged in successfully",
@@ -159,13 +171,13 @@ export async function authenticateAdmin(email: string, password: string): Promis
           email: Admin.email,
           token,
         },
-      }
+      };
     } else {
-      return { message:"Failed logging in, token not created", status: 202}
+      return { message: "Failed logging in, token not created", status: 202 };
     }
   } catch (err) {
     const error = err as { code: string };
     console.error("Error authenticating Admin:", error);
-    return { message:"Error authenticating Admin", status: 202}
+    return { message: "Error authenticating Admin", status: 202 };
   }
 }

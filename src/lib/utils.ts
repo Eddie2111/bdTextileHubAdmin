@@ -14,7 +14,7 @@ export function generateUniqueFilename() {
 
 export function createJWTToken(data: unknown): Promise<string> {
   return new Promise((resolve, reject) => {
-    if(!data) {
+    if (!data) {
       reject(new Error("No data provided"));
     }
     jwt.sign(

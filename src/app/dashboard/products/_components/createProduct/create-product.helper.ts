@@ -9,15 +9,10 @@ const createProductFormSchema = z.object({
   description: z.string().optional(),
   attributes: z.string().optional(),
   color: z.array(z.string()).min(1, "Select at least one color"),
-})
+});
 
 type TCreateProductFormResolverType = z.infer<typeof createProductFormSchema>;
 const createProductFormResolver = zodResolver(createProductFormSchema);
 
-export { 
-    createProductFormSchema, 
-    createProductFormResolver
-};
-export type {
-    TCreateProductFormResolverType,
-}
+export { createProductFormSchema, createProductFormResolver };
+export type { TCreateProductFormResolverType };

@@ -2,13 +2,13 @@
 import { cookies } from "next/headers";
 
 interface ICookieProps {
-    name: string; 
-    value: string; 
-    options?: {
-        path: string;
-        maxAge: number;
-        httpOnly?: boolean;
-    }
+  name: string;
+  value: string;
+  options?: {
+    path: string;
+    maxAge: number;
+    httpOnly?: boolean;
+  };
 }
 
 export async function getCookie(name: string) {
@@ -22,20 +22,19 @@ export async function getCookie(name: string) {
   return cookie.value;
 }
 
-export async function setCookie({name, value, options}: ICookieProps) {
-    try {
-        const cookieStore = cookies();
-        cookieStore.set(name, value, options);
-        return true;
-    } catch(err) {
-        console.error(err);
-        return false;
-    }
-
+export async function setCookie({ name, value, options }: ICookieProps) {
+  try {
+    const cookieStore = cookies();
+    cookieStore.set(name, value, options);
+    return true;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 }
 
 export async function deleteCookie(name: string) {
-    const cookieStore = cookies();
-    cookieStore.delete(name);
-    return true;
+  const cookieStore = cookies();
+  cookieStore.delete(name);
+  return true;
 }

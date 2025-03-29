@@ -46,21 +46,19 @@ export default function DashboardLayout({
   }, [pathname]);
 
   if (loading) {
-    return <LoadingSpinnerLayout/>
-  }
-  else if (pathname.includes("login")) {
+    return <LoadingSpinnerLayout />;
+  } else if (pathname.includes("login")) {
     return <div>{children}</div>;
   } else if (isAuthenticated) {
     return (
       <div className="flex h-[90vh] flex-col border-red-500 border-10">
         {/* Mobile Sidebar */}
-        <MobileSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen}/>
-
+        <MobileSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} />
 
         {/* Desktop Sidebar */}
         <DesktopSidebar setIsSidebarOpen={setIsSidebarOpen}>
           {children}
-          </DesktopSidebar>
+        </DesktopSidebar>
       </div>
     );
   }

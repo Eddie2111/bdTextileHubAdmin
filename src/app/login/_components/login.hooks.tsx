@@ -1,19 +1,19 @@
 "use client";
 
-import axios from 'axios';
+import axios from "axios";
 import { useForm } from "react-hook-form";
 
 import { loginFormSchemaResolver } from "./login.helpers";
 import type { TLoginFormType } from "./login.helpers";
-import type { IAuthenticateUser }  from "@/lib/repositories/admin.repository";
+import type { IAuthenticateUser } from "@/lib/repositories/admin.repository";
 
 import { toast } from "sonner";
 import { setCookie } from "@/lib/cookie";
 
-interface ICombinedInterface{
+interface ICombinedInterface {
   message: string;
   status: number;
-  data:  IAuthenticateUser
+  data: IAuthenticateUser;
 }
 
 export const useLoginForm = () => {
@@ -27,9 +27,14 @@ export const useLoginForm = () => {
 
   async function onSubmit(values: TLoginFormType) {
     const { email, password } = values;
-    const response = await axios.post<TLoginFormType,ICombinedInterface>("/login/api", {email,password}, {withCredentials: true});
+    const response = await axios.post<TLoginFormType, ICombinedInterface>(
+      "/login/api",
+      { email, password },
+      { withCredentials: true },
+    );
 
-    if (!response) toast.warning("Something went wrong, please try again later");
+    if (!response)
+      toast.warning("Something went wrong, please try again later");
     else if (response.status === 200 && response.data) {
       toast.success("Login Successful");
       // set httponly cookie
@@ -43,8 +48,8 @@ export const useLoginForm = () => {
         },
       });
       // force refresh to dashboard to load the state from the localstorage
-      window.location.href = '/dashboard';
-    } else if(response.status === 202 && response?.data?.message){
+      window.location.href = "/dashboard";
+    } else if (response.status === 202 && response?.data?.message) {
       toast.warning(response?.data?.message);
     }
   }

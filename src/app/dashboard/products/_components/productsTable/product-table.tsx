@@ -1,4 +1,5 @@
 "use client";
+import SanityImage from "@/components/common/sanity-image.client";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,22 +15,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { TProducts } from "@/types/product.types";
 
 import { Trash2, MoreHorizontal } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 
-interface IProduct {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  stock: number;
-  image: string;
-}
-
 interface IProductTableProps {
-  products: IProduct[];
-  setProducts: Dispatch<SetStateAction<IProduct[]>>;
+  products: TProducts[];
+  setProducts: Dispatch<SetStateAction<TProducts[] | undefined>>;
   searchTerm: string;
 }
 
@@ -41,7 +34,9 @@ export const ProductTable = ({
   const filteredProducts = products.filter(
     product =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchTerm.toLowerCase()),
+      product.categories
+        .map(element => element.toLowerCase())
+        .includes(searchTerm.toLowerCase()),
   );
   const handleDeleteProduct = (productId: string) => {
     setProducts(products.filter(product => product.id !== productId));
@@ -62,18 +57,17 @@ export const ProductTable = ({
         {filteredProducts.map(product => (
           <TableRow key={product.id}>
             <TableCell>
-              <img
-                src={product.image || "/placeholder.svg"}
+              <SanityImage
+                image={product.image[0]}
                 alt={product.name}
-                width={40}
-                height={40}
                 className="rounded-md object-cover"
+                dimension={{ width: 50, height: 50 }}
               />
             </TableCell>
             <TableCell className="font-medium">{product.name}</TableCell>
-            <TableCell>{product.category}</TableCell>
+            <TableCell>{product.categories.toString()}</TableCell>
             <TableCell>${product.price.toFixed(2)}</TableCell>
-            <TableCell>{product.stock}</TableCell>
+            <TableCell>{product.quantity}</TableCell>
             <TableCell className="text-right">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

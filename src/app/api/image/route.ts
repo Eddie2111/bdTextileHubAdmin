@@ -46,7 +46,10 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error("Error retrieving image:", error);
-    return Response.json({ error: "Failed to retrieve image" }, { status: 500 });
+    return Response.json(
+      { error: "Failed to retrieve image" },
+      { status: 500 },
+    );
   }
 }
 
@@ -64,8 +67,11 @@ export async function POST(request: Request) {
 
     if (!allowedMimeTypes.includes(mimeType)) {
       return Response.json(
-        { error: "Invalid file type. Only JPEG, PNG, and WebP images are allowed." },
-        { status: 400 }
+        {
+          error:
+            "Invalid file type. Only JPEG, PNG, and WebP images are allowed.",
+        },
+        { status: 400 },
       );
     }
 
@@ -80,14 +86,17 @@ export async function POST(request: Request) {
       console.log(error);
       return Response.json(
         { error: "Uploaded file is not a valid image." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!["jpeg", "png", "webp"].includes(imageMetadata.format)) {
       return Response.json(
-        { error: "Unsupported image format. Only JPEG, PNG, and WebP are allowed." },
-        { status: 400 }
+        {
+          error:
+            "Unsupported image format. Only JPEG, PNG, and WebP are allowed.",
+        },
+        { status: 400 },
       );
     }
 
@@ -97,10 +106,14 @@ export async function POST(request: Request) {
 
     const uniqueFilename = generateUniqueFilename();
 
-    const assetResponse = await client.assets.upload("image", optimizedImageBuffer, {
-      filename: uniqueFilename,
-      contentType: "image/webp",
-    });
+    const assetResponse = await client.assets.upload(
+      "image",
+      optimizedImageBuffer,
+      {
+        filename: uniqueFilename,
+        contentType: "image/webp",
+      },
+    );
 
     const docResponse = await client.create({
       _type: "images",

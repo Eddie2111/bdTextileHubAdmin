@@ -37,52 +37,52 @@ export const CreateProduct_Step_1 = ({ form }: IProductFormStep1Props) => {
         )}
       />
 
-<FormField
-          control={form.control}
-          name="categories"
-          render={() => (
-            <FormItem>
-              <FormLabel>Categories</FormLabel>
-              <div className="grid grid-cols-3 gap-4">
-                {/* Checkbox for each category */}
-                {["Clothing", "Accessories", "Home"].map((category) => (
-                  <FormField
-                    key={category}
-                    control={form.control}
-                    name="categories"
-                    render={({ field }) => {
-                      return (
-                        <FormItem
-                          key={category}
-                          className="flex flex-row items-start space-x-2 space-y-0"
-                        >
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value?.includes(category)}
-                              onCheckedChange={(checked) => {
-                                return checked
-                                  ? field.onChange([...field.value, category])
-                                  : field.onChange(
-                                      field.value?.filter(
-                                        (value) => value !== category
-                                      )
-                                    );
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">
-                            {category}
-                          </FormLabel>
-                        </FormItem>
-                      );
-                    }}
-                  />
-                ))}
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <FormField
+        control={form.control}
+        name="categories"
+        render={() => (
+          <FormItem>
+            <FormLabel>Categories</FormLabel>
+            <div className="grid grid-cols-3 gap-4">
+              {/* Checkbox for each category */}
+              {["Clothing", "Accessories", "Home"].map(category => (
+                <FormField
+                  key={category}
+                  control={form.control}
+                  name="categories"
+                  render={({ field }) => {
+                    return (
+                      <FormItem
+                        key={category}
+                        className="flex flex-row items-start space-x-2 space-y-0"
+                      >
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value?.includes(category)}
+                            onCheckedChange={checked => {
+                              return checked
+                                ? field.onChange([...field.value, category])
+                                : field.onChange(
+                                    field.value?.filter(
+                                      value => value !== category,
+                                    ),
+                                  );
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="text-sm font-normal">
+                          {category}
+                        </FormLabel>
+                      </FormItem>
+                    );
+                  }}
+                />
+              ))}
+            </div>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
       <div className="grid grid-cols-2 gap-4">
         <FormField

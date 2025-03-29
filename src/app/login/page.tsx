@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -8,13 +8,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
-import { Mail, Lock } from "lucide-react"
-import { PasswordInput } from "@/components/ui/password-input"
-import { useLoginForm } from "./_components/login.hooks"
+import { Mail, Lock } from "lucide-react";
+import { PasswordInput } from "@/components/ui/password-input";
+import { useLoginForm } from "./_components/login.hooks";
 
 export default function LoginPage() {
   const { form, onSubmit } = useLoginForm();
@@ -30,7 +37,9 @@ export default function LoginPage() {
               </div>
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold text-green-800">BD Textile Hub</CardTitle>
+          <CardTitle className="text-2xl font-bold text-green-800">
+            BD Textile Hub
+          </CardTitle>
           <CardDescription>Admin Panel Login</CardDescription>
         </CardHeader>
         <Form {...form}>
@@ -71,7 +80,9 @@ export default function LoginPage() {
                           type="password"
                           placeholder="••••••••"
                           className="pl-9"
-                          icon={<Lock className="h-4 w-4 text-muted-foreground" />}
+                          icon={
+                            <Lock className="h-4 w-4 text-muted-foreground" />
+                          }
                           {...field}
                         />
                       </div>
@@ -95,5 +106,5 @@ export default function LoginPage() {
         </Form>
       </Card>
     </div>
-  )
+  );
 }

@@ -1,13 +1,25 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { BarChart, LineChart, PieChart } from "lucide-react"
+import { useState } from "react";
+import { BarChart, LineChart, PieChart } from "lucide-react";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function AnalyticsPage() {
-  const [timeRange, setTimeRange] = useState("30days")
+  const [timeRange, setTimeRange] = useState("30days");
 
   // Sample data for charts
   const salesData = [
@@ -23,13 +35,13 @@ export default function AnalyticsPage() {
     { name: "Oct", value: 7500 },
     { name: "Nov", value: 9000 },
     { name: "Dec", value: 10000 },
-  ]
+  ];
 
   const categoryData = [
     { name: "Clothing", value: 45 },
     { name: "Accessories", value: 25 },
     { name: "Home", value: 30 },
-  ]
+  ];
 
   const visitorData = [
     { name: "Mon", value: 120 },
@@ -39,8 +51,8 @@ export default function AnalyticsPage() {
     { name: "Fri", value: 250 },
     { name: "Sat", value: 300 },
     { name: "Sun", value: 220 },
-  ]
-  console.log(typeof(salesData),typeof(visitorData));
+  ];
+  console.log(typeof salesData, typeof visitorData);
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -77,7 +89,9 @@ export default function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">$45,231.89</div>
-            <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+            <p className="text-xs text-muted-foreground">
+              +20.1% from last month
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -99,7 +113,9 @@ export default function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">+12,234</div>
-            <p className="text-xs text-muted-foreground">+19% from last month</p>
+            <p className="text-xs text-muted-foreground">
+              +19% from last month
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -120,12 +136,16 @@ export default function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">+573</div>
-            <p className="text-xs text-muted-foreground">+201 since last hour</p>
+            <p className="text-xs text-muted-foreground">
+              +201 since last hour
+            </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Conversion Rate
+            </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -143,7 +163,9 @@ export default function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">3.2%</div>
-            <p className="text-xs text-muted-foreground">+0.3% from last week</p>
+            <p className="text-xs text-muted-foreground">
+              +0.3% from last week
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -154,16 +176,21 @@ export default function AnalyticsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Monthly Sales</CardTitle>
-              <CardDescription>Sales performance over the past year</CardDescription>
+              <CardDescription>
+                Sales performance over the past year
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="h-[400px] flex items-center justify-center">
                 <div className="text-center">
                   <BarChart className="h-16 w-16 mx-auto text-green-600 mb-4" />
                   <p className="text-muted-foreground">
-                    Bar chart visualization of monthly sales data would appear here.
+                    Bar chart visualization of monthly sales data would appear
+                    here.
                   </p>
-                  <p className="text-sm text-muted-foreground mt-2">Highest sales: December ($10,000)</p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Highest sales: December ($10,000)
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -175,17 +202,20 @@ export default function AnalyticsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Sales by Category</CardTitle>
-              <CardDescription>Distribution of sales across product categories</CardDescription>
+              <CardDescription>
+                Distribution of sales across product categories
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="h-[400px] flex items-center justify-center">
                 <div className="text-center">
                   <PieChart className="h-16 w-16 mx-auto text-green-600 mb-4" />
                   <p className="text-muted-foreground">
-                    Pie chart visualization of sales by category would appear here.
+                    Pie chart visualization of sales by category would appear
+                    here.
                   </p>
                   <div className="flex justify-center gap-4 mt-4">
-                    {categoryData.map((item) => (
+                    {categoryData.map(item => (
                       <div key={item.name} className="flex items-center gap-2">
                         <div
                           className={`w-3 h-3 rounded-full ${
@@ -213,14 +243,21 @@ export default function AnalyticsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Daily Visitors</CardTitle>
-              <CardDescription>Website traffic over the past week</CardDescription>
+              <CardDescription>
+                Website traffic over the past week
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="h-[400px] flex items-center justify-center">
                 <div className="text-center">
                   <LineChart className="h-16 w-16 mx-auto text-green-600 mb-4" />
-                  <p className="text-muted-foreground">Line chart visualization of daily visitors would appear here.</p>
-                  <p className="text-sm text-muted-foreground mt-2">Peak traffic: Saturday (300 visitors)</p>
+                  <p className="text-muted-foreground">
+                    Line chart visualization of daily visitors would appear
+                    here.
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Peak traffic: Saturday (300 visitors)
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -228,6 +265,5 @@ export default function AnalyticsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

@@ -16,13 +16,15 @@ interface IAuthContext {
   setLoading: (loading: boolean) => void;
 }
 
-const useAuth: UseBoundStore<StoreApi<IAuthContext>> = create((set): IAuthContext => ({
-  user: null,
-  setUser: (user) => set({ user }),
-  isAuthenticated: false,
-  setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
-  loading: true,
-  setLoading: (loading) => set({ loading }),
-}));
+const useAuth: UseBoundStore<StoreApi<IAuthContext>> = create(
+  (set): IAuthContext => ({
+    user: null,
+    setUser: user => set({ user }),
+    isAuthenticated: false,
+    setIsAuthenticated: isAuthenticated => set({ isAuthenticated }),
+    loading: true,
+    setLoading: loading => set({ loading }),
+  }),
+);
 
 export { useAuth };
