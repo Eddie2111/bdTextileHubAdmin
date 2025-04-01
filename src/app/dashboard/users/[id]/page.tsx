@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Ban, Mail, Phone, User } from "lucide-react";
 
@@ -14,6 +14,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+import { getUsersWithProfile } from "@/lib/repositories/user.repository";
+
 interface UserProfileProps {
   params: {
     id: string;
@@ -22,7 +24,19 @@ interface UserProfileProps {
 
 export default function UserProfilePage({ params }: UserProfileProps) {
   const router = useRouter();
+  const [users, setUsers] = useState([]);
   const { id } = params;
+  // ! test the flow here
+  useEffect(()=>{
+    async function callback(){
+      const response = await getUsersWithProfile({skip: 0, take: 10});
+      if (response) {
+        console.log(response);
+        setUsers(response);
+      }
+    }
+    callback();
+  }, [setUsers]);
 
   // In a real app, you would fetch user data based on the ID
   const [user, setUser] = useState({
