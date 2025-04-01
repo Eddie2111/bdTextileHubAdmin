@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Ban, MoreHorizontal, Search } from "lucide-react";
 
@@ -21,6 +21,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
+import { getUsersWithProfile } from "@/lib/repositories/user.repository";
 
 interface User {
   id: string;
@@ -75,6 +77,18 @@ export default function UsersPage() {
       status: "active",
     },
   ]);
+  const [usersData, setUsersData] = useState([]);
+    // ! test the flow here
+    useEffect(()=>{
+      async function callback(){
+        const response = await getUsersWithProfile({skip: 0, take: 10});
+        if (response) {
+          console.log(response);
+          setUsersData(response);
+        }
+      }
+      callback();
+    }, [setUsersData]);
 
   const [searchTerm, setSearchTerm] = useState("");
 
