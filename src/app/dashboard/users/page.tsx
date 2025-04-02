@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import type { UserProfile } from "@prisma/client";
 import { getUsersWithProfile } from "@/lib/repositories/user.repository";
 
 interface User {
@@ -77,7 +77,10 @@ export default function UsersPage() {
       status: "active",
     },
   ]);
-  const [usersData, setUsersData] = useState([]);
+
+  // ! type casting not possible due to modified response for each query
+  // type needs to be provided manually to adapt to the response
+  const [usersData, setUsersData] = useState<UserProfile[] | undefined>();
     // ! test the flow here
     useEffect(()=>{
       async function callback(){
