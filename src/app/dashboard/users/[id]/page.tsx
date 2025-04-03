@@ -10,30 +10,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import { getOneUserWithProfile } from "@/lib/repositories/profile.repository";
 interface UserProfileProps {
   params: {
     id: string;
   };
 }
 
-export default function UserProfilePage({ params }: UserProfileProps) {
+export default async function UserProfilePage({ params }: UserProfileProps) {
   const router = useRouter();
-  const [users, setUsers] = useState([]);
   const { id } = params;
 
-  // In a real app, you would fetch user data based on the ID
-  const [user, setUser] = useState({
-    id,
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "+1 (555) 123-4567",
-    address: "123 Main St, Anytown, USA",
-    joinDate: "January 15, 2023",
-    status: "active" as "active" | "blocked",
-    orders: 12,
-    totalSpent: "$1,245.00",
-  });
+  const response = await getOneUserWithProfile({id});
 
   const toggleUserStatus = () => {
     setUser({
