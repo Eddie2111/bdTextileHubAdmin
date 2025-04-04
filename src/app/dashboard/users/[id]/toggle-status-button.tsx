@@ -1,20 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Ban } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { Ban } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 interface ToggleUserStatusButtonProps {
-  userId: string
+  userId: string;
 }
 
-export function ToggleUserStatusButton({ userId }: ToggleUserStatusButtonProps) {
-  const [isActive, setIsActive] = useState(true)
-  const [isLoading, setIsLoading] = useState(false)
-
+export function ToggleUserStatusButton({
+  userId,
+}: ToggleUserStatusButtonProps) {
+  const [isActive, setIsActive] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  console.log(userId);
   const toggleUserStatus = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       // This would be replaced with your actual API call
       // const response = await fetch(`/api/users/${userId}/toggle-status`, {
@@ -22,16 +24,17 @@ export function ToggleUserStatusButton({ userId }: ToggleUserStatusButtonProps) 
       // });
 
       // Simulating API call
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      setIsActive(!isActive)
-      toast.success(`The user has been ${isActive ? "blocked" : "unblocked"}.`)
+      setIsActive(!isActive);
+      toast.success(`The user has been ${isActive ? "blocked" : "unblocked"}.`);
     } catch (error) {
-      toast("Failed to update user status. Please try again.")
+      console.log(error);
+      toast("Failed to update user status. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <Button
@@ -44,5 +47,5 @@ export function ToggleUserStatusButton({ userId }: ToggleUserStatusButtonProps) 
       <Ban className="mr-2 h-4 w-4" />
       {isActive ? "Block User" : "Unblock User"}
     </Button>
-  )
+  );
 }

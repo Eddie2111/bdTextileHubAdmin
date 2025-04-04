@@ -1,7 +1,8 @@
 "use server";
 import { prisma } from "@/lib/prisma";
 import { OrderStatus, PaymentMethod } from "@prisma/client";
-
+import { Order } from "@prisma/client";
+export type TOrder = Order;
 // Create an order
 export async function createOrder(data: {
   userId: string;

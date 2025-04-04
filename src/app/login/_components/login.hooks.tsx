@@ -10,6 +10,7 @@ import { setCookie } from "@/lib/cookie";
 
 import type { TLoginFormType } from "./login.helpers";
 import type { IAuthenticateUser } from "@/lib/repositories/admin.repository";
+import { DASHBOARD_ROUTE } from "@/components/common/routes";
 
 interface ICombinedInterface {
   message: string;
@@ -48,8 +49,8 @@ export const useLoginForm = () => {
           maxAge: 60 * 60 * 24 * 1, // one day
         },
       });
-      // force refresh to dashboard to load the state from the localstorage
-      window.location.href = "/dashboard";
+      // hard refresh to dashboard to load the state from the localstorage
+      window.location.href = DASHBOARD_ROUTE;
     } else if (response.status === 202 && response?.data?.message) {
       toast.warning(response?.data?.message);
     }

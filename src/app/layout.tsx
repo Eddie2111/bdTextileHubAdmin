@@ -18,7 +18,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "BDTextileHub",
+  title: "BDTextileHub | Admin",
   description: "BD Textile Hub Admin Panel",
 };
 

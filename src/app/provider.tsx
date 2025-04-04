@@ -3,14 +3,14 @@
 import type React from "react";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { useAuth } from "@/lib/contexts/auth.context";
 import { getCookie } from "@/lib/cookie";
 import { MobileSidebar } from "@/components/common/mobileSidebar";
 import { DesktopSidebar } from "@/components/common/desktopSidebar";
 import { LoadingSpinnerLayout } from "@/components/common/loadingSpinner";
+import { DASHBOARD_ROUTE, LOGIN_ROUTE } from "@/components/common/routes";
 
 export default function DashboardLayout({
   children,
@@ -28,18 +28,18 @@ export default function DashboardLayout({
       setLoading(true);
       const response = await getCookie("auth_token");
       if (response) {
+        if (pathname.includes("login")) router.push(DASHBOARD_ROUTE);
         setIsAuthenticated(true);
-        router.push("/dashboard");
         setLoading(false);
       } else {
         setIsAuthenticated(false);
-        router.push("/login");
+        router.push(LOGIN_ROUTE);
         setLoading(false);
       }
     }
 
     checkAuthentication();
-  }, [router, setIsAuthenticated, setLoading]);
+  }, [router, pathname, setIsAuthenticated, setLoading]);
 
   useEffect(() => {
     setIsSidebarOpen(false);
