@@ -30,3 +30,14 @@ export function createJWTToken(data: unknown): Promise<string> {
     );
   });
 }
+export function formatDate(date: Date | string | null | undefined): string {
+  if (!date) return "N/A";
+
+  const d = typeof date === "string" ? new Date(date) : date;
+
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(d);
+}

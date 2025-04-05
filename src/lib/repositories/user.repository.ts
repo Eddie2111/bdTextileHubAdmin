@@ -97,3 +97,60 @@ export async function deleteUser(id: string) {
     return null;
   }
 }
+
+import { Prisma } from "@prisma/client";
+
+export async function getUser(id: string) {
+  try {
+    const users = await prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        image: true,
+        profiles: {
+          select: {
+            firstName: true,
+            lastName: true,
+            phoneNumber: true,
+            address: true,
+            image: true,
+          },
+        },
+        orders: {
+          select: {
+            id: true,
+            products: true, // Array of product IDs
+            shippingCharge: true,
+            createdAt: true,
+          },
+        },
+        wishlist: {
+          select: {
+            id: true,
+            products: true,
+          },
+        },
+        cart: {
+          select: {
+            id: true,
+            products: true,
+          },
+        },
+        checkout: {
+          select: {
+            id: true,
+            products: true,
+          },
+        },
+        createdAt: true,
+        updatedAt: true,
+      },
+    } as Prisma.UserFindUniqueArgs);
+    return users;
+  } catch (err) {
+    console.error("Error fetching users:", err);
+    throw err;
+  }
+}

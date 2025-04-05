@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Calendar, Eye, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -21,18 +22,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ORDERS_ROUTE } from "@/components/common/routes";
 
 interface Order {
   id: string;
   customer: string;
   date: string;
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  status:
+    | "pending"
+    | "processing"
+    | "shipped"
+    | "delivered"
+    | "cancelled"
+    | string;
   total: number;
   items: number;
 }
 
 export default function OrdersPage() {
-  const [orders, setOrders] = useState<Order[]>([
+  const router = useRouter();
+  const orders = [
     {
       id: "ORD-001",
       customer: "John Doe",
@@ -97,8 +106,7 @@ export default function OrdersPage() {
       total: 69.99,
       items: 1,
     },
-  ]);
-  console.log(typeof setOrders);
+  ];
 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -125,6 +133,9 @@ export default function OrdersPage() {
       default:
         return "bg-gray-100 text-gray-800";
     }
+  };
+  const navigate = (orderId: string) => {
+    router.push(`${ORDERS_ROUTE}/${orderId}`);
   };
 
   return (
@@ -195,7 +206,11 @@ export default function OrdersPage() {
                   <TableCell>{order.items}</TableCell>
                   <TableCell>${order.total.toFixed(2)}</TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="icon">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => navigate(order.id)}
+                    >
                       <Eye className="h-4 w-4" />
                       <span className="sr-only">View order</span>
                     </Button>

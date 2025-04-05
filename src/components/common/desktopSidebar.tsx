@@ -57,7 +57,7 @@ export const DesktopSidebar = ({
       </aside>
 
       <main className="flex flex-col">
-        <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-white px-4 lg:h-[60px] lg:px-6">
+        <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-white px-4 lg:h-[65px] lg:px-6">
           <Button
             variant="ghost"
             size="icon"
