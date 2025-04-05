@@ -21,6 +21,7 @@ export async function getOneUserWithProfile({ id }: { id: string }) {
           image: true,
           createdAt: true,
           updatedAt: true,
+          status: true,
           user: {
             select: {
               email: true,
@@ -163,6 +164,7 @@ export async function getUsersWithProfile({
           image: true,
           createdAt: true,
           updatedAt: true,
+          status: true,
           user: {
             select: {
               email: true,
@@ -227,10 +229,12 @@ export async function updateUserWithProfile({
   userData: Partial<UserProfile>;
 }) {
   try {
-    await prisma.userProfile.update({
+    console.log(userData);
+    const response = await prisma.userProfile.update({
       where: { id },
       data: userData,
     });
+    console.log(response);
     return true;
   } catch (err: unknown) {
     const errorData = err as { code: string; message: string };

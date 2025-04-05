@@ -62,10 +62,12 @@ export default function UsersPage() {
       (user.phoneNumber && user.phoneNumber.includes(searchTerm)),
   )
   async function setUserStatus(userId: string, status: string) {
+    const userStatus = status === "active" ? UserStatus.ACTIVE : UserStatus.BLOCKED;
+    console.log(status, userStatus);
     await updateUserWithProfile({
       id: userId,
       userData: {
-        status: status ? UserStatus.ACTIVE : UserStatus.BLOCKED,
+        status: userStatus
       },
     })
   }

@@ -16,5 +16,5 @@ export interface IUserProfile {
       products: string[];
       shippingCharge: number;
     }[];
-    status?: UserStatus;
+    status?: UserStatus | null;
   }
