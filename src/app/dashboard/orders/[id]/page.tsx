@@ -1,64 +1,99 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import Image from "next/image"
-import { ArrowLeft, Calendar, CreditCard, MapPin, Package, Truck } from "lucide-react"
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import {
+  ArrowLeft,
+  Calendar,
+  CreditCard,
+  MapPin,
+  Package,
+  Truck,
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Mock data types based on the provided models
-type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled"
-type PaymentMethod = "credit_card" | "paypal" | "cash_on_delivery"
+type OrderStatus =
+  | "pending"
+  | "processing"
+  | "shipped"
+  | "delivered"
+  | "cancelled";
+type PaymentMethod = "credit_card" | "paypal" | "cash_on_delivery";
 
 interface Address {
-  fullName: string
-  addressLine1: string
-  addressLine2?: string
-  city: string
-  state: string
-  postalCode: string
-  country: string
-  phoneNumber: string
+  fullName: string;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+  phoneNumber: string;
 }
 
 interface OrderProduct {
-  id: string
-  name: string
-  price: number
-  quantity: number
-  image: string
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
 }
 
 interface OrderDetails {
-  id: string
-  userId: string
-  products: OrderProduct[]
-  shippingAddress: Address
-  billingAddress: Address
-  shippingCharge: number
-  orderStatus: OrderStatus
-  paymentMethod: PaymentMethod
-  createdAt: string
-  updatedAt: string
-  customerName: string
-  customerEmail: string
+  id: string;
+  userId: string;
+  products: OrderProduct[];
+  shippingAddress: Address;
+  billingAddress: Address;
+  shippingCharge: number;
+  orderStatus: OrderStatus;
+  paymentMethod: PaymentMethod;
+  createdAt: string;
+  updatedAt: string;
+  customerName: string;
+  customerEmail: string;
 }
 
-export default function OrderDetailsPage({ params }: { params: { id: string } }) {
-  const router = useRouter()
-  const { id } = params
-  const [order, setOrder] = useState<OrderDetails | null>(null)
-  const [loading, setLoading] = useState(true)
+export default function OrderDetailsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const router = useRouter();
+  const { id } = params;
+  const [order, setOrder] = useState<OrderDetails | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Simulate fetching order data
     const fetchOrder = () => {
-      setLoading(true)
+      setLoading(true);
       // Mock data for the order
       const mockOrder: OrderDetails = {
         id,
@@ -113,69 +148,72 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
         updatedAt: "2023-06-15T14:45:00Z",
         customerName: "John Doe",
         customerEmail: "john@example.com",
-      }
+      };
 
-      setOrder(mockOrder)
-      setLoading(false)
-    }
+      setOrder(mockOrder);
+      setLoading(false);
+    };
 
-    fetchOrder()
-  }, [id])
+    fetchOrder();
+  }, [id]);
 
   const handleStatusChange = (newStatus: string) => {
     if (order) {
       setOrder({
         ...order,
         orderStatus: newStatus as OrderStatus,
-      })
+      });
     }
-  }
+  };
 
   const getStatusBadgeClass = (status: OrderStatus) => {
     switch (status) {
       case "pending":
-        return "bg-yellow-100 text-yellow-800"
+        return "bg-yellow-100 text-yellow-800";
       case "processing":
-        return "bg-blue-100 text-blue-800"
+        return "bg-blue-100 text-blue-800";
       case "shipped":
-        return "bg-purple-100 text-purple-800"
+        return "bg-purple-100 text-purple-800";
       case "delivered":
-        return "bg-green-100 text-green-800"
+        return "bg-green-100 text-green-800";
       case "cancelled":
-        return "bg-red-100 text-red-800"
+        return "bg-red-100 text-red-800";
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   const getPaymentMethodText = (method: PaymentMethod) => {
     switch (method) {
       case "credit_card":
-        return "Credit Card"
+        return "Credit Card";
       case "paypal":
-        return "PayPal"
+        return "PayPal";
       case "cash_on_delivery":
-        return "Cash on Delivery"
+        return "Cash on Delivery";
       default:
-        return method
+        return method;
     }
-  }
+  };
 
   const calculateSubtotal = () => {
-    if (!order) return 0
-    return order.products.reduce((total, product) => total + product.price * product.quantity, 0)
-  }
+    if (!order) return 0;
+    return order.products.reduce(
+      (total, product) => total + product.price * product.quantity,
+      0,
+    );
+  };
 
   const calculateTotal = () => {
-    return calculateSubtotal() + (order?.shippingCharge || 0)
-  }
+    return calculateSubtotal() + (order?.shippingCharge || 0);
+  };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
         <p>Loading order details...</p>
       </div>
-    )
+    );
   }
 
   if (!order) {
@@ -183,7 +221,7 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
       <div className="flex items-center justify-center h-full">
         <p>Order not found</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -204,7 +242,8 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
                 <CardTitle>Order #{order.id}</CardTitle>
                 <CardDescription className="flex items-center mt-1">
                   <Calendar className="h-4 w-4 mr-1" />
-                  {new Date(order.createdAt).toLocaleDateString()} at {new Date(order.createdAt).toLocaleTimeString()}
+                  {new Date(order.createdAt).toLocaleDateString()} at{" "}
+                  {new Date(order.createdAt).toLocaleTimeString()}
                 </CardDescription>
               </div>
               <span
@@ -219,7 +258,10 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
           <CardContent className="space-y-6">
             <div>
               <h3 className="font-medium mb-2">Update Order Status</h3>
-              <Select value={order.orderStatus} onValueChange={handleStatusChange}>
+              <Select
+                value={order.orderStatus}
+                onValueChange={handleStatusChange}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
@@ -237,7 +279,9 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
               <h3 className="font-medium mb-2">Customer Information</h3>
               <div className="space-y-1">
                 <p>{order.customerName}</p>
-                <p className="text-sm text-muted-foreground">{order.customerEmail}</p>
+                <p className="text-sm text-muted-foreground">
+                  {order.customerEmail}
+                </p>
               </div>
             </div>
 
@@ -250,9 +294,12 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
                 <div className="text-sm">
                   <p>{order.shippingAddress.fullName}</p>
                   <p>{order.shippingAddress.addressLine1}</p>
-                  {order.shippingAddress.addressLine2 && <p>{order.shippingAddress.addressLine2}</p>}
+                  {order.shippingAddress.addressLine2 && (
+                    <p>{order.shippingAddress.addressLine2}</p>
+                  )}
                   <p>
-                    {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.postalCode}
+                    {order.shippingAddress.city}, {order.shippingAddress.state}{" "}
+                    {order.shippingAddress.postalCode}
                   </p>
                   <p>{order.shippingAddress.country}</p>
                   <p>{order.shippingAddress.phoneNumber}</p>
@@ -267,9 +314,12 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
                 <div className="text-sm">
                   <p>{order.billingAddress.fullName}</p>
                   <p>{order.billingAddress.addressLine1}</p>
-                  {order.billingAddress.addressLine2 && <p>{order.billingAddress.addressLine2}</p>}
+                  {order.billingAddress.addressLine2 && (
+                    <p>{order.billingAddress.addressLine2}</p>
+                  )}
                   <p>
-                    {order.billingAddress.city}, {order.billingAddress.state} {order.billingAddress.postalCode}
+                    {order.billingAddress.city}, {order.billingAddress.state}{" "}
+                    {order.billingAddress.postalCode}
                   </p>
                   <p>{order.billingAddress.country}</p>
                   <p>{order.billingAddress.phoneNumber}</p>
@@ -291,7 +341,8 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
           <CardHeader>
             <CardTitle>Order Summary</CardTitle>
             <CardDescription>
-              {order.products.length} {order.products.length === 1 ? "item" : "items"} in this order
+              {order.products.length}{" "}
+              {order.products.length === 1 ? "item" : "items"} in this order
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -304,7 +355,7 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {order.products.map((product) => (
+                {order.products.map(product => (
                   <TableRow key={product.id}>
                     <TableCell>
                       <div className="flex items-center gap-3">
@@ -319,7 +370,9 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
                       </div>
                     </TableCell>
                     <TableCell>{product.quantity}</TableCell>
-                    <TableCell className="text-right">${(product.price * product.quantity).toFixed(2)}</TableCell>
+                    <TableCell className="text-right">
+                      ${(product.price * product.quantity).toFixed(2)}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -355,6 +408,5 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
         </Card>
       </div>
     </div>
-  )
+  );
 }
-

@@ -1,24 +1,36 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Calendar, MoreHorizontal, Search } from "lucide-react"
+import { useState } from "react";
+import Link from "next/link";
+import { Calendar, MoreHorizontal, Search } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { CARTS_ROUTE, USERS_ROUTE } from "@/components/common/routes"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { CARTS_ROUTE, USERS_ROUTE } from "@/components/common/routes";
 
 interface ICart {
-  id: string
-  userId: string
-  userName: string
-  userEmail: string
-  itemCount: number
-  totalValue: number
-  lastUpdated: string
+  id: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  itemCount: number;
+  totalValue: number;
+  lastUpdated: string;
 }
 
 export default function CartsPage() {
@@ -70,14 +82,14 @@ export default function CartsPage() {
     },
   ];
 
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState("");
 
   const filteredCarts = carts.filter(
-    (cart) =>
+    cart =>
       cart.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       cart.userEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
       cart.id.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+  );
 
   return (
     <div className="space-y-4">
@@ -89,7 +101,7 @@ export default function CartsPage() {
             placeholder="Search carts..."
             className="w-full pl-8"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
@@ -111,13 +123,15 @@ export default function CartsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredCarts.map((cart) => (
+              {filteredCarts.map(cart => (
                 <TableRow key={cart.id}>
                   <TableCell className="font-medium">{cart.id}</TableCell>
                   <TableCell>
                     <div className="flex flex-col">
                       <span>{cart.userName}</span>
-                      <span className="text-xs text-muted-foreground">{cart.userEmail}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {cart.userEmail}
+                      </span>
                     </div>
                   </TableCell>
                   <TableCell>{cart.itemCount}</TableCell>
@@ -138,10 +152,14 @@ export default function CartsPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem asChild>
-                          <Link href={`${CARTS_ROUTE}/${cart.id}`}>View Details</Link>
+                          <Link href={`${CARTS_ROUTE}/${cart.id}`}>
+                            View Details
+                          </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                          <Link href={`${USERS_ROUTE}/${cart.userId}`}>View Customer</Link>
+                          <Link href={`${USERS_ROUTE}/${cart.userId}`}>
+                            View Customer
+                          </Link>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -159,6 +177,5 @@ export default function CartsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

@@ -1,45 +1,62 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import Image from "next/image"
-import { ArrowLeft, ShoppingCart } from "lucide-react"
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { ArrowLeft, ShoppingCart } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { CARTS_ROUTE } from "@/components/common/routes"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { CARTS_ROUTE } from "@/components/common/routes";
 
 interface CartItem {
-  id: string
-  productId: string
-  name: string
-  price: number
-  quantity: number
-  image: string
+  id: string;
+  productId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
 }
 
 interface CartDetails {
-  id: string
-  userId: string
-  items: CartItem[]
-  createdAt: string
-  updatedAt: string
-  customerName: string
-  customerEmail: string
+  id: string;
+  userId: string;
+  items: CartItem[];
+  createdAt: string;
+  updatedAt: string;
+  customerName: string;
+  customerEmail: string;
 }
 
-export default function CartDetailsPage({ params }: { params: { id: string } }) {
-  const router = useRouter()
-  const { id } = params
-  const [cart, setCart] = useState<CartDetails | null>(null)
-  const [loading, setLoading] = useState(true)
+export default function CartDetailsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const router = useRouter();
+  const { id } = params;
+  const [cart, setCart] = useState<CartDetails | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Simulate fetching cart data
     const fetchCart = () => {
-      setLoading(true)
+      setLoading(true);
       // Mock data for the cart
       const mockCart: CartDetails = {
         id,
@@ -74,36 +91,39 @@ export default function CartDetailsPage({ params }: { params: { id: string } }) 
         updatedAt: "2023-06-15T14:45:00Z",
         customerName: "John Doe",
         customerEmail: "john@example.com",
-      }
+      };
 
-      setCart(mockCart)
-      setLoading(false)
-    }
+      setCart(mockCart);
+      setLoading(false);
+    };
 
-    fetchCart()
-  }, [id])
+    fetchCart();
+  }, [id]);
 
   const calculateSubtotal = () => {
-    if (!cart) return 0
-    return cart.items.reduce((total, item) => total + item.price * item.quantity, 0)
-  }
+    if (!cart) return 0;
+    return cart.items.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0,
+    );
+  };
 
   const calculateShipping = () => {
     // Simple shipping calculation
-    const subtotal = calculateSubtotal()
-    return subtotal > 100 ? 0 : 10
-  }
+    const subtotal = calculateSubtotal();
+    return subtotal > 100 ? 0 : 10;
+  };
 
   const calculateTotal = () => {
-    return calculateSubtotal() + calculateShipping()
-  }
+    return calculateSubtotal() + calculateShipping();
+  };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
         <p>Loading cart details...</p>
       </div>
-    )
+    );
   }
 
   if (!cart) {
@@ -111,7 +131,7 @@ export default function CartDetailsPage({ params }: { params: { id: string } }) 
       <div className="flex items-center justify-center h-full">
         <p>Cart not found</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -131,8 +151,8 @@ export default function CartDetailsPage({ params }: { params: { id: string } }) 
               <div>
                 <CardTitle>Cart #{cart.id}</CardTitle>
                 <CardDescription className="mt-1">
-                  Last updated: {new Date(cart.updatedAt).toLocaleDateString()} at{" "}
-                  {new Date(cart.updatedAt).toLocaleTimeString()}
+                  Last updated: {new Date(cart.updatedAt).toLocaleDateString()}{" "}
+                  at {new Date(cart.updatedAt).toLocaleTimeString()}
                 </CardDescription>
               </div>
               <ShoppingCart className="h-5 w-5 text-muted-foreground" />
@@ -143,7 +163,9 @@ export default function CartDetailsPage({ params }: { params: { id: string } }) 
               <h3 className="font-medium mb-2">Customer Information</h3>
               <div className="space-y-1">
                 <p>{cart.customerName}</p>
-                <p className="text-sm text-muted-foreground">{cart.customerEmail}</p>
+                <p className="text-sm text-muted-foreground">
+                  {cart.customerEmail}
+                </p>
               </div>
             </div>
 
@@ -165,7 +187,8 @@ export default function CartDetailsPage({ params }: { params: { id: string } }) 
           <CardHeader>
             <CardTitle>Cart Summary</CardTitle>
             <CardDescription>
-              {cart.items.length} {cart.items.length === 1 ? "item" : "items"} in this cart
+              {cart.items.length} {cart.items.length === 1 ? "item" : "items"}{" "}
+              in this cart
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -178,7 +201,7 @@ export default function CartDetailsPage({ params }: { params: { id: string } }) 
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {cart.items.map((item) => (
+                {cart.items.map(item => (
                   <TableRow key={item.id}>
                     <TableCell>
                       <div className="flex items-center gap-3">
@@ -193,7 +216,9 @@ export default function CartDetailsPage({ params }: { params: { id: string } }) 
                       </div>
                     </TableCell>
                     <TableCell>{item.quantity}</TableCell>
-                    <TableCell className="text-right">${(item.price * item.quantity).toFixed(2)}</TableCell>
+                    <TableCell className="text-right">
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -206,7 +231,11 @@ export default function CartDetailsPage({ params }: { params: { id: string } }) 
               </div>
               <div className="flex justify-between text-sm">
                 <span>Shipping</span>
-                <span>{calculateShipping() === 0 ? "Free" : `$${calculateShipping().toFixed(2)}`}</span>
+                <span>
+                  {calculateShipping() === 0
+                    ? "Free"
+                    : `$${calculateShipping().toFixed(2)}`}
+                </span>
               </div>
               <Separator />
               <div className="flex justify-between font-medium">
@@ -216,8 +245,14 @@ export default function CartDetailsPage({ params }: { params: { id: string } }) 
             </div>
 
             <div className="flex flex-col gap-2">
-              <Button className="w-full bg-green-600 hover:bg-green-700">Proceed to Checkout</Button>
-              <Button variant="outline" className="w-full" onClick={() => router.push(CARTS_ROUTE)}>
+              <Button className="w-full bg-green-600 hover:bg-green-700">
+                Proceed to Checkout
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => router.push(CARTS_ROUTE)}
+              >
                 Return to Cart
               </Button>
             </div>
@@ -225,6 +260,5 @@ export default function CartDetailsPage({ params }: { params: { id: string } }) 
         </Card>
       </div>
     </div>
-  )
+  );
 }
-

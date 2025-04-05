@@ -1,16 +1,28 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Calendar, MoreHorizontal, Search } from "lucide-react"
+import { useState } from "react";
+import Link from "next/link";
+import { Calendar, MoreHorizontal, Search } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { mock_wishlist } from "./wishlist.constant"
-import { USERS_ROUTE, WISHLISTS_ROUTE } from "@/components/common/routes"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { mock_wishlist } from "./wishlist.constant";
+import { USERS_ROUTE, WISHLISTS_ROUTE } from "@/components/common/routes";
 
 // interface Wishlist {
 //   id: string
@@ -24,14 +36,14 @@ import { USERS_ROUTE, WISHLISTS_ROUTE } from "@/components/common/routes"
 export default function WishlistsPage() {
   // const [wishlists, setWishlists] = useState<Wishlist[]>(mock_wishlist);
   const wishlists = mock_wishlist;
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState("");
 
   const filteredWishlists = wishlists.filter(
-    (wishlist) =>
+    wishlist =>
       wishlist.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       wishlist.userEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
       wishlist.id.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+  );
 
   return (
     <div className="space-y-4">
@@ -43,7 +55,7 @@ export default function WishlistsPage() {
             placeholder="Search wishlists..."
             className="w-full pl-8"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
@@ -64,13 +76,15 @@ export default function WishlistsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredWishlists.map((wishlist) => (
+              {filteredWishlists.map(wishlist => (
                 <TableRow key={wishlist.id}>
                   <TableCell className="font-medium">{wishlist.id}</TableCell>
                   <TableCell>
                     <div className="flex flex-col">
                       <span>{wishlist.userName}</span>
-                      <span className="text-xs text-muted-foreground">{wishlist.userEmail}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {wishlist.userEmail}
+                      </span>
                     </div>
                   </TableCell>
                   <TableCell>{wishlist.itemCount}</TableCell>
@@ -90,10 +104,14 @@ export default function WishlistsPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem asChild>
-                          <Link href={`${WISHLISTS_ROUTE}/${wishlist.id}`}>View Details</Link>
+                          <Link href={`${WISHLISTS_ROUTE}/${wishlist.id}`}>
+                            View Details
+                          </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                          <Link href={`${USERS_ROUTE}/${wishlist.userId}`}>View Customer</Link>
+                          <Link href={`${USERS_ROUTE}/${wishlist.userId}`}>
+                            View Customer
+                          </Link>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -111,6 +129,5 @@ export default function WishlistsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

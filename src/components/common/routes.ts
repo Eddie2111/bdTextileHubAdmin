@@ -1,4 +1,13 @@
-import { BarChart3, Heart, Images, LayoutDashboard, Package, ShoppingBag, ShoppingCart, Users, } from "lucide-react";
+import {
+  BarChart3,
+  Heart,
+  Images,
+  LayoutDashboard,
+  Package,
+  ShoppingBag,
+  ShoppingCart,
+  Users,
+} from "lucide-react";
 
 export const LOGIN_ROUTE = "/login";
 export const DASHBOARD_ROUTE = "/dashboard";
