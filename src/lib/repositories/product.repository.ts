@@ -1,6 +1,7 @@
 "use server";
 import { Prisma, ProductStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { deleteImage } from "./sanity.repository";
 
 // Create a new product
 export async function createProduct(data: {
@@ -111,14 +112,49 @@ export async function updateProduct(
 // Delete a product
 export async function deleteProduct(id: string) {
   try {
-    if (!id) {
-      throw new Error("Product ID is required.");
+    // Validate input
+    if (!id || typeof id !== "string" || id.trim() === "") {
+      return { message: "Product ID is required and must be a non-empty string.", status: false };
     }
-    return await prisma.product.delete({
-      where: { id },
+
+    // Start a Prisma transaction
+    const response = await prisma.$transaction(async (prismaTx) => {
+      // Step 1: Fetch product details
+      const productDetails = await prismaTx.product.findFirstOrThrow({
+        where: { id },
+      });
+
+      // Step 2: Check if the product has stock
+      // if (productDetails.quantity > 0) {
+      //   throw new Error("Product cannot be deleted because it has stock.");
+      // }
+
+      // Step 3: Delete associated images
+      const imageDeletionResults = await Promise.allSettled(
+        productDetails.image.map((image) => deleteImage(image))
+      );
+
+      // Log failed image deletions
+      imageDeletionResults.forEach((result, index) => {
+        if (result.status === "rejected") {
+          console.error(`Failed to delete image ${index}:`, result.reason);
+        }
+      });
+
+      // Step 4: Delete the product
+      await prismaTx.product.delete({
+        where: { id },
+      });
+
+      // Return success response
+      return { message: "Product deleted successfully", status: true };
     });
+
+    // Return the transaction result
+    return response;
   } catch (err) {
     console.error("Error deleting product:", err);
-    throw err;
+    const errorResponse = err as unknown as { message: string };
+    return { message: `Error deleting product: ${errorResponse.message}`, status: false };
   }
 }

@@ -15,10 +15,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { TProducts } from "@/types/product.types";
+import { deleteProduct } from "@/lib/repositories/product.repository";
 
 import { Trash2, MoreHorizontal } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
+import type { TProducts } from "@/types/product.types";
 
 interface IProductTableProps {
   products: TProducts[];
@@ -38,7 +39,8 @@ export const ProductTable = ({
         .map(element => element.toLowerCase())
         .includes(searchTerm.toLowerCase()),
   );
-  const handleDeleteProduct = (productId: string) => {
+  const handleDeleteProduct = async (productId: string) => {
+    await deleteProduct(productId);
     setProducts(products.filter(product => product.id !== productId));
   };
   return (

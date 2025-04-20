@@ -1,25 +1,7 @@
 import sharp from "sharp";
 import { generateUniqueFilename } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
-
-async function fetchImageDetails(imageId: string) {
-  const imageQuery = `*[_type == "images" && _id == $imageId]{
-    mainImage {
-      asset->{
-        url,
-        metadata {
-          dimensions {
-            width,
-            height
-          }
-        }
-      },
-      alt
-    }
-  }`;
-
-  return await client.fetch(imageQuery, { imageId });
-}
+import { fetchImageDetails } from "@/lib/repositories/sanity.repository";
 
 export async function GET(request: Request) {
   try {
